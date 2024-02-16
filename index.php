@@ -7,7 +7,7 @@
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <title>Document</title>
+    <title>Trello.Mattéo</title>
 </head>
 <body>
 <!-- Masthead -->
@@ -111,6 +111,8 @@
 <!-- Board info bar -->
 <section class="board-info-bar">
 
+<h2>Liste de toutes les taches</h2>
+
     <div class="board-controls">
 
         <?php
@@ -147,16 +149,17 @@
 
     <div class="board-info">
 
-        <h2 class="board-info-title">Board Title</h2>
-        <p class="board-info-description">Board Description</p>
+        
 
 </section>
 <!-- End of board info bar -->
+
 
 <!-- Lists container -->
 <section class="lists-container">
 
     <?php
+    
         // Connexion à la base de données
         $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -174,6 +177,8 @@
             while($row = $result->fetch_assoc()) {
                 echo "<div class='list'>";
                 echo "<h3 class='list-title'>" . $row["list_name"] . "</h3>";
+                echo "<button class='delete-list-btn' data-list-id='" . $row["list_id"] . "'>Delete list</button>";
+
 
                 $list_id = $row["list_id"];
                 $sql_cards = "SELECT * FROM cards WHERE list_id = '$list_id'";
@@ -183,7 +188,7 @@
                     echo "<ul class='list-items'>";
                     // Affichage des cartes
                     while($row_card = $result_cards->fetch_assoc()) {
-                        echo "<li>" . $row_card["card_name"] . "</li>";
+                        echo "<li>" . $row_card["card_name"] . "<button class='delete-card-btn' data-card-id='" . $row_card["card_id"] . "'><i class='fas fa-trash'></i></button></li>";
                     }
                     echo "</ul>";
                 } else {
@@ -197,15 +202,67 @@
                       </div>";
                 echo "</div>";
             }
+           
         } else {
             echo "0 results";
         }
         $conn->close();
     ?>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var deleteButtons = document.querySelectorAll('.delete-card-btn');
+
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function() {
+            var cardId = this.getAttribute('data-card-id');
+            deleteCard(cardId);
+        });
+    }
+});
+
+function deleteCard(cardId) {
+    // Connexion à la base de données
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            location.reload();
+        }
+    };
+    xhttp.open("POST", "delete_card.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("card_id=" + cardId);
+}
+</script>
+
     <button class="add-list-btn btn" onclick="addList()">Add a list</button>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteButtons = document.querySelectorAll('.delete-list-btn');
+
+            for (var i = 0; i < deleteButtons.length; i++) {
+                deleteButtons[i].addEventListener('click', function() {
+                    var listId = this.getAttribute('data-list-id');
+                    deleteList(listId);
+                });
+            }
+        });
+
+        function deleteList(listId) {
+            // Connexion à la base de données
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    location.reload();
+                }
+            };
+            xhttp.open("POST", "delete_list.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("list_id=" + listId);
+        }
+
+
         function addCard(listId) {
             document.getElementById('addCardForm' + listId).style.display = 'block';
         }

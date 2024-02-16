@@ -354,3 +354,36 @@ body {
 .dropdown-content a:hover {background-color: rgba(2, 1, 1, 0.2)} /* Légèrement plus clair lors du survol */
 
 .show {display: block;}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.delete-list-btn {
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    cursor: pointer; /* Cursor style */
+    padding: 10px 24px; /* Padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as inline-block */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Margin */
+    transition-duration: 0.4s; /* Transition duration */
+}
+
+/* Change background color on hover */
+.delete-list-btn:hover {
+    background-color: #da190b;
+    color: white;
+}
+
+/* Style for the trash icon */
+.delete-list-btn i {
+    margin-top: auto;
+    margin-right: 5px; /* Space between the icon and the text */
+}

@@ -1,3 +1,7 @@
+///////////////////////////////////////////////
+// #   Script pour ajouter les cartes a la BDD//         
+//////////////////////////////////////////////
+
 <?php
     // Connexion à la base de données
     $servername = "localhost";
