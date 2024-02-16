@@ -18,28 +18,63 @@
         <button class="boards-btn btn"><i class="fab fa-trello boards-btn-icon"></i>Boards</button>
 
         <div class="board-search">
-            <input type="search" class="board-search-input" aria-label="Board Search">
-            <i class="fas fa-search search-icon" aria-hidden="true"></i>
+        <input type="search" class="board-search-input" aria-label="Board Search" onfocus="showDropdown()" onblur="hideDropdown()">
+        <div id="dropdown" class="dropdown-content">
+            <!-- Les éléments du menu déroulant seront ajoutés ici par JavaScript -->
         </div>
-       <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    var searchInput = document.querySelector('.board-search-input');
+        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+    </div>
+    <script>
+        var searchInput = document.querySelector('.board-search-input');
+        var dropdown = document.getElementById('dropdown');
+        var boardInfoBar = document.querySelector('.board-info-title'); // Ajout de cette ligne
 
-    searchInput.addEventListener('input', function() {
-        var searchTerm = searchInput.value.toLowerCase();
+        function showDropdown() {
+            // Remplissez le menu déroulant avec les noms des listes
+            var lists = document.querySelectorAll('.list');
+            for (var i = 0; i < lists.length; i++) {
+                var listTitle = lists[i].querySelector('.list-title').innerText;
+                var a = document.createElement('a');
+                a.textContent = listTitle;
+                dropdown.appendChild(a);
 
-        var lists = document.querySelectorAll('.list');
-        for (var i = 0; i < lists.length; i++) {
-            var listTitle = lists[i].querySelector('.list-title').innerText.toLowerCase();
-            if (listTitle.includes(searchTerm)) {
-                lists[i].style.display = 'block';
-            } else {
-                lists[i].style.display = 'none';
+                // Ajoutez un gestionnaire d'événements click à l'élément du menu déroulant
+                a.addEventListener('click', function() {
+                    // Lorsqu'un élément du menu déroulant est cliqué, affichez le titre de la liste dans la barre d'information du tableau
+                    boardInfoBar.innerText = this.textContent;
+                });
             }
+
+            // Montrez le menu déroulant
+            dropdown.classList.add('show');
         }
-    });
-});
-</script>
+
+        function hideDropdown() {
+            // Cachez le menu déroulant et videz-le
+            dropdown.classList.remove('show');
+            dropdown.innerHTML = '';
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.querySelector('.board-search-input');
+
+            searchInput.addEventListener('input', function() {
+                var searchTerm = searchInput.value.toLowerCase();
+
+                var lists = document.querySelectorAll('.list');
+                for (var i = 0; i < lists.length; i++) {
+                    var listTitle = lists[i].querySelector('.list-title').innerText.toLowerCase();
+                    if (listTitle.includes(searchTerm)) {
+                        lists[i].style.display = 'block';
+                    } else {
+                        lists[i].style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
 
     </div>
 
@@ -108,6 +143,12 @@
         ?>
 
     </div>
+
+
+    <div class="board-info">
+
+        <h2 class="board-info-title">Board Title</h2>
+        <p class="board-info-description">Board Description</p>
 
 </section>
 <!-- End of board info bar -->
