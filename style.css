@@ -145,7 +145,10 @@ body {
     justify-content: space-between;
     margin: 0.8rem 0;
     padding: 0 1rem;
-    color: #f6f6f6;
+    color: #fffefe; /* Changez la couleur de fond comme vous le souhaitez */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .board-controls {
